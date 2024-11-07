@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de videojuegos{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">Lista de Videojuegos</h1>
+
+        <!-- Selector de letras -->
+        <!-- Selector de letras -->
+        <div class="buttons are-small">
+            <a class="button {% if letter == '' %}is-link{% endif %}" href="?">Todos</a>
+            {% for char in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+            <a class="button {% if letter == char %}is-link{% endif %}" href="?letter={{ char }}">{{ char }}</a>
+            {% endfor %}
+            <a class="button {% if letter == '0' %}is-link{% endif %}" href="?letter=0">0-9</a>
+            <a class="button {% if letter == '#' %}is-link{% endif %}" href="?letter=#">#</a>
+        </div>
+
+
+        <!-- Grid de videojuegos -->
+        <div class="columns is-multiline">
+            {% for game in page_obj %}
+            <div class="column is-one-quarter">
+                <div class="card">
+                    <div class="card-content">
+                        <h2 class="title is-5">{{ game.name }}</h2>
+                        <p><strong>Géneros:</strong>
+                            {% for genre in game.genres.all %}
+                            {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        <p><strong>Fecha de publicación:</strong> {{ game.release_date }}</p>
+                        <p><strong>Motor de juego:</strong> {{ game.game_engine.name }}</p>
+                        <p><strong>Desarrolladores:</strong>
+                            {% for developer in game.developers.all %}
+                            {{ developer.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        {% if game.download_link %}
+                        <p><strong>Enlace de descarga:</strong>
+                            <a href="{{ game.download_link }}" target="_blank">Descargar</a>
+                        </p>
+                        {% endif %}
+                        <p><strong>Descripción:</strong> {{ game.description|truncatewords:20 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay videojuegos disponibles.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Paginación -->
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+            {% if page_obj.has_previous %}
+            <a class="pagination-previous"
+               href="?{% if letter %}letter={{ letter }}&{% endif %}page={{ page_obj.previous_page_number }}">Anterior</a>
+            {% else %}
+            <span class="pagination-previous" disabled>Anterior</span>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+            <a class="pagination-next"
+               href="?{% if letter %}letter={{ letter }}&{% endif %}page={{ page_obj.next_page_number }}">Siguiente</a>
+            {% else %}
+            <span class="pagination-next" disabled>Siguiente</span>
+            {% endif %}
+
+            <ul class="pagination-list">
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li><a class="pagination-link is-current">{{ num }}</a></li>
+                {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+                <li><a class="pagination-link" href="?{% if letter %}letter={{ letter }}&{% endif %}page={{ num }}">{{
+                    num }}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</section>
+{% endblock %}

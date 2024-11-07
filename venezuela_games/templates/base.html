@@ -1,0 +1,70 @@
+{% load static %}
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venezuela Games — {% block title %}{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+<body class="has-background-light has-text-dark">
+    <!-- Navbar -->
+    <nav class="navbar is-primary">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{% url 'index' %}">
+                    Venezuela Games
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <a class="navbar-item" href="{% url 'videogame_list' %}">Listado de Videojuegos</a>
+                    <!-- Button for dark/light mode toggle -->
+                    <button id="toggle-dark-mode" class="navbar-item button is-light">
+                        <i class="fas fa-moon"></i> Cambiar Modo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content section -->
+    <section class="section">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </section>
+
+    <!-- JavaScript to toggle dark mode -->
+    <script>
+        const toggleButton = document.getElementById('toggle-dark-mode');
+
+        toggleButton.addEventListener('click', function () {
+            if (document.body.classList.contains('has-background-dark')) {
+                document.body.classList.remove('has-background-dark');
+                document.body.classList.remove('has-text-light');
+                document.body.classList.add('has-background-light');
+                document.body.classList.add('has-text-dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('has-background-light');
+                document.body.classList.remove('has-text-dark');
+                document.body.classList.add('has-background-dark');
+                document.body.classList.add('has-text-light');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Apply saved theme from localStorage
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('has-background-dark');
+            document.body.classList.add('has-text-light');
+        } else {
+            document.body.classList.add('has-background-light');
+            document.body.classList.add('has-text-dark');
+        }
+    </script>
+</body>
+</html>

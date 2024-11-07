@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">Venezuela Games</h1>
+            <h2 class="subtitle">Base de datos de la industria de videojuegos en el país</h2>
+        </div>
+    </div>
+</section>
+
+<!-- Barra de búsqueda -->
+<section class="section search-section">
+    <div class="container">
+        <div class="search-box">
+            <h3 class="title is-4">Buscador</h3>
+            <form method="get" action="{% url 'search_videogames' %}">
+                <div class="field is-grouped">
+                    <div class="control has-icons-left is-expanded">
+                        <label>
+                            <input class="input is-medium" type="text" placeholder="Buscar por nombre o género" name="query" id="search-query">
+                        </label>
+                        <span class="icon is-left has-text-black">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary is-medium" type="submit">Buscar</button>
+                    </div>
+                </div>
+                <div id="autocomplete-results" class="autocomplete-results"></div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Últimos Añadidos -->
+<section class="section last-added-section">
+    <div class="container">
+        <h3 class="title is-4">Últimos añadidos</h3>
+        <div class="columns is-multiline">
+            {% for game in latest_games %}
+                <div class="column is-one-third">
+                    <div class="card">
+                        <div class="card-content">
+                            <p class="title is-5">{{ game.name }}</p>
+                            <p class="subtitle is-6">{{ game.genre }}</p>
+                            <p class="content">{{ game.description|truncatewords:20 }}</p>
+                        </div>
+                        <footer class="card-footer">
+                            <a href="{% url 'game_detail' game.id %}" class="card-footer-item">Ver detalles</a>
+                        </footer>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<script src="{% static 'js/predictive_search.js' %}"></script>
+{% endblock %}
