@@ -82,12 +82,13 @@ WSGI_APPLICATION = 'venezuela_games.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Replace the DATABASES section of your settings.py with this
-postgre_url = urlparse(os.getenv("DATABASE_URL"))
+postgre_url = urlparse(os.environ.get('DATABASE_URL', ''))
+db_name = postgre_url.path.lstrip('/')
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': postgre_url.path.replace('/', ''),
+        'NAME': db_name,
         'USER': postgre_url.username,
         'PASSWORD': postgre_url.password,
         'HOST': postgre_url.hostname,
