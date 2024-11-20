@@ -14,9 +14,9 @@ class TestUrls(TestCase):
     @classmethod
     def setUpTestData(cls):
         genre = Genre.objects.create(name="RPG")
-        for i in range(1):
-            game = VideoGame.objects.create(name=f"Game {i + 1}")
-            game.genres.add(genre)
+        game = VideoGame.objects.create(name="Game 1")
+        game.genres.add(genre)
+        cls.game_id = game.id  # Guarda el ID para las pruebas
 
     def test_index_url_is_resolved(self):
         url = reverse('index')
@@ -39,7 +39,7 @@ class TestUrls(TestCase):
         self.assertEqual(resolve(url).func, search_video_games_ajax)
 
     def test_game_detail_url_with_valid_id(self):
-        response = self.client.get(reverse('game_detail', args=[1]))  # ID ficticio
+        response = self.client.get(reverse('game_detail', args=[self.game_id]))  # ID ficticio
         self.assertEqual(response.status_code, 200)
 
     def test_game_detail_url_with_invalid_id(self):

@@ -53,5 +53,16 @@ class VideoGameListViewTests(TestCase):
         self.assertContains(response, 'Game 1')
         self.assertNotContains(response, 'Game 2')
 
+    def test_search_video_games_ajax_response_format(self):
+        VideoGame.objects.create(name="Super Mario")
+        response = self.client.get(reverse('search_video_games_ajax') + '?query=Mario')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/json')
+
+    def test_search_video_games_ajax_no_results(self):
+        response = self.client.get(reverse('search_video_games_ajax') + '?query=UnknownGame')
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, [])
+
 
 
