@@ -27,6 +27,6 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests 🧪
       env:
-        DATABASE_URL: ${{ secrets.Database }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
         python manage.py test
