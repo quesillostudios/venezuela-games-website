@@ -1,1 +1,1 @@
-from .videogame import VideoGame, Genre, GameEngine, Developer
+from .video_game import VideoGame, Genre, GameEngine, Developer

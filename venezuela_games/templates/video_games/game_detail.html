@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ game.name }} — Detalles{% endblock %}
+
+{% block content %}
+    <h1 class="title">{{ game.name }}</h1>
+    <h2 class="subtitle">
+        {{ game.release_date }} | Géneros:
+        {% for genre in game.genres.all %}
+            {{ genre.name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </h2>
+    <p><strong>Desarrolladores:</strong>
+        {% for developer in game.developers.all %}
+            {{ developer.name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <p><strong>Motor de juego:</strong> {{ game.game_engine.name }}</p>
+    <p><strong>Descripción:</strong> {{ game.description }}</p>
+
+    {% if game.download_link %}
+        <a href="{{ game.download_link }}" class="button is-link" target="_blank">Descargar</a>
+    {% endif %}
+{% endblock %}

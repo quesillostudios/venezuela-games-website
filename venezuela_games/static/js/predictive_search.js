@@ -3,7 +3,7 @@ const autocompleteResults = document.getElementById('autocomplete-results');
 
 async function search(query) {
     if (query.trim().length > 2) {
-        const response = await fetch(`/search_videogames_ajax/?query=${query}`);
+        const response = await fetch(`/search_video_games_ajax/?query=${query}`);
         const data = await response.json();
 
         autocompleteResults.innerHTML = '';
